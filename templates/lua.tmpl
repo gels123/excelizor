@@ -1,6 +1,6 @@
-{{- "local"}} {{.Name}} = {
+{{- "local"}} {{.Name}}={
     {{- range .Data}}
-    [{{.ID}}] = { 
+    [{{.ID}}]={
         {{- range .Fields -}}
         {{- if eq .Type "dict"}}
             {{- template "DictDictTmpl" .}}
@@ -11,15 +11,14 @@
         {{- else}} 
             {{- template "DictNumberTmpl" .}} 
         {{- end -}}
-        {{- end}}
+        {{- end -}}
     },
     {{- end}}
 }
-
 return {{.Name -}}
 
 {{- define "DictDictTmpl"}} 
-{{indent .Level .Name}} = { 
+{{- .Name}}={
     {{- range .Fields -}} 
     {{- if eq .Type "dict"}} 
         {{- template "DictDictTmpl" .}} 
@@ -31,11 +30,11 @@ return {{.Name -}}
         {{- template "DictNumberTmpl" .}} 
     {{- end -}} 
     {{- end}} 
-{{indent .Level "},"}}
+{{- "},"}}
 {{- end}}
 
 {{- define "ListDictTmpl"}} 
-{{indent .Level "["}}{{.Name}}] = { 
+{{- "["}}{{.Name}}]={
     {{- range .Fields -}} 
     {{- if eq .Type "dict"}} 
         {{- template "DictDictTmpl" .}}
@@ -47,11 +46,11 @@ return {{.Name -}}
         {{- template "DictNumberTmpl" .}} 
     {{- end -}} 
     {{- end}} 
-{{indent .Level "},"}}
+{{- "},"}}
 {{- end}}
 
 {{- define "DictListTmpl"}}
-{{indent .Level .Name}} = { 
+{{- .Name}}={
     {{- range .Fields -}}
     {{- if eq .Type "dict"}}
         {{- template "ListDictTmpl" .}} 
@@ -63,11 +62,11 @@ return {{.Name -}}
         {{- template "ListNumberTmpl" .}} 
     {{- end -}} 
     {{- end}}
-{{indent .Level "},"}}
+{{- "},"}}
 {{- end}}
 
 {{- define "ListListTmpl"}}
-{{indent .Level "["}}{{.Name}}] = { 
+{{- "["}}{{.Name}}]={
     {{- range .Fields -}}
     {{- if eq .Type "dict"}}
         {{- template "ListDictTmpl" .}} 
@@ -79,21 +78,21 @@ return {{.Name -}}
         {{- template "ListNumberTmpl" .}} 
     {{- end -}} 
     {{- end}}
-{{indent .Level "},"}}
+{{- "},"}}
 {{- end}}
 
 {{- define "ListStringTmpl"}}
-{{indent .Level "["}}{{.Name}}] = "{{.Data}}",
+"{{- .Data -}}",
 {{- end}}
 
 {{- define "ListNumberTmpl"}}
-{{indent .Level "["}}{{- .Name}}] = {{.Data}},
+{{- .Data -}},
 {{- end}}
 
 {{- define "DictStringTmpl"}}
-{{indent .Level .Name}} = "{{.Data}}",
+{{- .Name}}="{{.Data}}",
 {{- end}}
 
 {{- define "DictNumberTmpl"}}
-{{indent .Level .Name}} = {{.Data}},
+{{- .Name}}={{.Data}},
 {{- end}}

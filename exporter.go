@@ -37,8 +37,12 @@ func (e *exporter) ExportLua(folder string, xl *xlsx) {
 	if err != nil {
 		panic(err)
 	}
-
-	newFile, err := os.Create(path.Join(folder, xl.FileName+".lua"))
+	newFileName := path.Join(folder, xl.SubPath)
+	if _, err := os.Stat(newFileName); os.IsNotExist(err) {
+		os.MkdirAll(newFileName, os.ModePerm) // mkdir 创建目录，mkdirAll 可创建多层级目录
+	}
+	newFileName = path.Join(newFileName, xl.FileName+".lua")
+	newFile, err := os.Create(newFileName)
 	defer newFile.Close()
 	if err != nil {
 		log.Fatal(err)
@@ -55,8 +59,12 @@ func (e *exporter) ExportJSON(folder string, xl *xlsx) {
 	if err != nil {
 		panic(err)
 	}
-
-	newFile, err := os.Create(path.Join(folder, xl.FileName+".json"))
+	newFileName := path.Join(folder, xl.SubPath)
+	if _, err := os.Stat(newFileName); os.IsNotExist(err) {
+		os.MkdirAll(newFileName, os.ModePerm) // mkdir 创建目录，mkdirAll 可创建多层级目录
+	}
+	newFileName = path.Join(newFileName, xl.FileName+".json")
+	newFile, err := os.Create(newFileName)
 	defer newFile.Close()
 	if err != nil {
 		log.Fatal(err)

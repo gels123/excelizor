@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type testgels struct {
+	num int32
+}
+
 type xlsx struct {
 	Name        string
 	FileName    string
@@ -15,6 +19,7 @@ type xlsx struct {
 	Data        []*xField
 	keymap      map[int]*xField
 	ParentClass string
+	SubPath     string
 }
 
 func (x *xlsx) Init(fileName string, name string) {

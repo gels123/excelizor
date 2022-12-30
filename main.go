@@ -32,7 +32,6 @@ var loadedFiles map[string]*fileXlsx
 func init() {
 	params = new(parameters)
 	flag.StringVar(&params.excelSrc, "p", "", "[Required] Relative `path` of excel files folder")
-
 	flag.StringVar(&params.tag, "tag", "", "only field with this tag or empty string will be exported")
 	flag.StringVar(&params.luaPath, "lua", "", "path to place exported .lua files, export no .lua files if parameter is missing")
 	flag.StringVar(&params.jsonPath, "json", "", "path to place exported .json files, export no .json files if parameter is missing")
@@ -56,6 +55,8 @@ func main() {
 		flag.PrintDefaults()
 		return
 	}
+	params.excelSrc = strings.ReplaceAll(params.excelSrc, "\\", "/")
+	params.excelSrc = strings.ReplaceAll(params.excelSrc, "./", "")
 
 	loadedFiles = make(map[string]*fileXlsx)
 
@@ -125,6 +126,13 @@ func parseFile(fileName string, file *excelize.File) *xlsx {
 	lower, camel := name2lower2Camel(fileName)
 	x.Init(lower, camel)
 	x.Parse(data)
+	subPath := file.Path
+	subPath = strings.ReplaceAll(subPath, "\\", "/")
+	bpos := strings.Index(subPath, params.excelSrc)
+	epos := strings.LastIndex(subPath, fileName)
+	subPath = subPath[bpos+len(params.excelSrc) : epos]
+	subPath = strings.ReplaceAll(subPath, "/", "")
+	x.SubPath = subPath
 	return x
 }
 
@@ -134,18 +142,14 @@ func exportFile(x *xlsx) {
 
 	if params.luaPath != "" {
 		e.ExportLua(params.luaPath, x)
-
 	}
 	if params.jsonPath != "" {
 		e.ExportJSON(params.jsonPath, x)
-
 	}
 	if params.cshapPath != "" {
 		e.ExportCSharp(params.cshapPath, x)
-
 	}
 	if params.golangPath != "" {
 		e.ExportGolang(params.golangPath, x)
-
 	}
 }
