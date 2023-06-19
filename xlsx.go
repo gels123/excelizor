@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strconv"
 	"strings"
 )
 
@@ -17,7 +16,7 @@ type xlsx struct {
 	Template    *xField
 	OwnTemplate *xField
 	Data        []*xField
-	keymap      map[int]*xField
+	keymap      map[string]*xField
 	ParentClass string
 	SubPath     string
 }
@@ -26,7 +25,7 @@ func (x *xlsx) Init(fileName string, name string) {
 	x.Name = name
 	x.FileName = fileName
 	x.Data = make([]*xField, 0)
-	x.keymap = make(map[int]*xField)
+	x.keymap = make(map[string]*xField)
 }
 
 func (x *xlsx) Parse(rows [][]string) {
@@ -42,7 +41,7 @@ func (x *xlsx) Parse(rows [][]string) {
 			if strings.HasPrefix(rows[i][0], "//") || rows[i][0] == "" {
 				continue
 			}
-			id, _ := strconv.Atoi(rows[i][0])
+			id := strings.Trim(rows[i][0], " ")
 			if _, ok2 := x.keymap[id]; !ok2 {
 				field.ParseDatas(id, rows[i])
 				field.SetLevel(4)

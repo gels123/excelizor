@@ -9,7 +9,7 @@ import (
 )
 
 type xField struct {
-	ID          int
+	ID          string
 	Name        string
 	FullName    string
 	Type        string
@@ -84,7 +84,7 @@ func (f *xField) ParseSubFieldsDefs(names []string, defs []string, tags []string
 	}
 }
 
-func (f *xField) ParseDatas(id int, datas []string) error {
+func (f *xField) ParseDatas(id string, datas []string) error {
 	data := strings.TrimSpace(datas[0])
 	if strings.ToLower(data) == "nil" || strings.ToLower(data) == "null" {
 		return errors.New("this field is null")

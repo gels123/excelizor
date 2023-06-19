@@ -31,7 +31,6 @@ func trimData(data string) string {
 		}
 		before = data
 	}
-
 }
 
 func splitName(data string) []string {
