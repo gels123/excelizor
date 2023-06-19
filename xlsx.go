@@ -51,7 +51,6 @@ func (x *xlsx) Parse(rows [][]string) {
 			} else {
 				log.Fatalln("Parse", x.Name, "failed, Id", id, "is duplicated")
 			}
-
 		}
 		i := 0
 		for i < len(x.Template.Fields) {
