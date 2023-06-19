@@ -79,14 +79,23 @@ func handleData(dataType string, data string) (string, error) {
 	var retErr error
 	switch dataType {
 	case "int":
+		if data == "" {
+			data = "0"
+		}
 		ret, err := strconv.Atoi(data)
 		result = strconv.Itoa(ret)
 		retErr = err
 	case "float":
+		if data == "" {
+			data = "0.0"
+		}
 		ret, err := strconv.ParseFloat(data, 32)
 		result = strconv.FormatFloat(ret, 'f', 3, 32)
 		retErr = err
 	case "bool":
+		if data == "" {
+			data = "false"
+		}
 		ret, err := strconv.ParseBool(data)
 		result = strconv.FormatBool(ret)
 		retErr = err
