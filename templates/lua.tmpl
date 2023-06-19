@@ -1,10 +1,6 @@
 {{- "local"}} {{.Name}}={
     {{- range .Data}}
-    {{if eq (index .Fields 0).Type "string" -}}
-    ["{{.ID}}"]={
-    {{- else -}}
-    [{{.ID}}]={
-    {{- end -}}
+    {
         {{- range .Fields -}}
         {{- if eq .Type "dict"}}
             {{- template "DictDictTmpl" .}}
